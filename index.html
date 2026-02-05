@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I Love You</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #ffb3c6, #ff758f, #ff4d6d);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      animation: bgGlow 6s ease-in-out infinite;
+    }
+
+    @keyframes bgGlow {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.15); }
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      color: #ffffff;
+      text-shadow:
+        0 0 10px rgba(255,255,255,0.6),
+        0 0 30px rgba(255,105,180,0.8);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      background-color: #fff;
+      margin-left: 6px;
+      animation: blink 1s infinite;
+      height: 1em;
+      vertical-align: bottom;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .pulse {
+      animation: heartbeat 1.3s infinite;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      15% { transform: scale(1.08); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.14); }
+      70% { transform: scale(1); }
+    }
+
+    .heart {
+      margin-top: 20px;
+      font-size: 3.5rem;
+      opacity: 0;
+      animation: floatUp 4s ease-in-out infinite;
+    }
+
+    .heart.show {
+      opacity: 1;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0); }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      animation: sparkle 3s linear infinite;
+    }
+
+    @keyframes sparkle {
+      0% { transform: translateY(0) scale(0); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-120px) scale(1); opacity: 0; }
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background: rgba(255,255,255,0.35);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="heading"><span id="text"></span><span class="cursor"></span></h1>
+    <div id="heart" class="heart">💖</div>
+    <button id="playBtn">▶ Play our song</button>
+  </div>
+
+  <!-- Place o-o-jaane-janna.mp3 in the SAME folder as index.html -->
+  <audio id="song" src="o-o-jaane-janna.mp3"></audio>
+
+  <script>
+    const message = "I love you Hajira Sohail!";
+    const textElement = document.getElementById("text");
+    const heading = document.getElementById("heading");
+    const heart = document.getElementById("heart");
+    const song = document.getElementById("song");
+    const playBtn = document.getElementById("playBtn");
+
+    let index = 0;
+
+    function typeEffect() {
+      if (index < message.length) {
+        textElement.textContent += message.charAt(index);
+        index++;
+        setTimeout(typeEffect, 120);
+      } else {
+        document.querySelector('.cursor').style.display = 'none';
+        heading.classList.add('pulse');
+        heart.classList.add('show');
+        createSparkles();
+      }
+    }
+
+    playBtn.addEventListener('click', () => {
+      song.play();
+      playBtn.textContent = '♪ Now playing: O O Jaane Janna';
+    });
+
+    function createSparkles() {
+      setInterval(() => {
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+        sparkle.style.left = Math.random() * window.innerWidth + 'px';
+        sparkle.style.bottom = '0px';
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 3000);
+      }, 250);
+    }
+
+    typeEffect();
+  </script>
+</body>
+</html>
